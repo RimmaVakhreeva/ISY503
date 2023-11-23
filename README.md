@@ -42,4 +42,9 @@ To run this project locally, you will need a Python environment with Django inst
 For more detailed instructions and project-specific setup requirements, refer to the documentation inside the repository.
 
 #### Collaborators
-This project was developed collaboratively by students of the ISY503 Intelligent Systems course. Each member's contribution is detailed in the project report.
+This project was developed collaboratively by the following students of the ISY503 Intelligent Systems course:
+
+    Pavel Bryzgalov
+    Thaila El Kadre Paganini
+    Daria Tarasova
+    Rimma Vakhreeva
