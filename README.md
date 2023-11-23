@@ -43,8 +43,10 @@ For more detailed instructions and project-specific setup requirements, refer to
 
 #### Collaborators
 This project was developed collaboratively by the following students of the ISY503 Intelligent Systems course:
+| Name                      | Student Number |
+|---------------------------|----------------|
+| Pavel Bryzgalov           | A00106477      |
+| Thaila El Kadre Paganini  | A00778894      |
+| Daria Tarasova            | A00084889      |
+| Rimma Vakhreeva           | [Student Number Needed] |
 
-    Pavel Bryzgalov
-    Thaila El Kadre Paganini
-    Daria Tarasova
-    Rimma Vakhreeva
