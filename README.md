@@ -48,5 +48,5 @@ This project was developed collaboratively by the following students of the ISY5
 | Pavel Bryzgalov           | A00106477      |
 | Thaila El Kadre Paganini  | A00778894      |
 | Daria Tarasova            | A00084889      |
-| Rimma Vakhreeva           | [Student Number Needed] |
+| Rimma Vakhreeva           | A00103876      |
 
