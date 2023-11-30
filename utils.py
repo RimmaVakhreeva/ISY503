@@ -128,8 +128,8 @@ def augument(data_dir, center, left, right, steering_angle, range_x=100, range_y
     image, steering_angle = choose_image(data_dir, center, left, right, steering_angle)
     image, steering_angle = random_flip(image, steering_angle)
     image, steering_angle = random_translate(image, steering_angle, range_x, range_y)
-    image = random_shadow(image)
-    image = random_brightness(image)
+    # image = random_shadow(image)
+    # image = random_brightness(image)
     return image, steering_angle
 
 
@@ -147,6 +147,7 @@ def batch_generator(data_dir, image_paths, steering_angles, batch_size, is_train
             # argumentation
             if is_training and np.random.rand() < 0.6:
                 image, steering_angle = augument(data_dir, center, left, right, steering_angle)
+                # image = load_image(data_dir, center)
             else:
                 image = load_image(data_dir, center) 
             # add the image and steering angle to the batch
