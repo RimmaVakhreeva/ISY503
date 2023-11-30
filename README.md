@@ -26,7 +26,7 @@ To run this project locally, you will need a Python environment with Django inst
 4. **Set Up the Project**:
    - Execute the following command: 
      ```bash
-     run python manage.py migrate
+     python manage.py migrate
      ```
    - This will set up the database schema.
 6. **Run the Django Development Server**:
