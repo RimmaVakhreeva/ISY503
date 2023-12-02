@@ -3,6 +3,11 @@
 #### Project Overview
 This repository contains the final project for ISY503 Intelligent Systems, focused on applying foundational principles of AI to a Computer Vision project. The project's goal is to train a model on sample data for a self-driving simulation, ensuring the car does not crash or leave the road.
 
+#### Important
+Version of socketio and engineio must be as follows:
+
+    python-socketio==4.6.1
+    python-engineio==3.13.2
 
 #### Collaborators
 This project was developed collaboratively by the following students of the ISY503 Intelligent Systems course:
