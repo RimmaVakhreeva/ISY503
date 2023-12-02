@@ -1,22 +1,27 @@
 import base64
 from io import BytesIO
 
+import cv2
 import eventlet
 import eventlet.wsgi
 import numpy as np
 import socketio
 from PIL import Image
 from flask import Flask
+from keras.models import load_model
+
+from utils import preprocess
 
 MODEL_PATH = 'model.h5'
 
 
 class TelemetryServer:
-    def __init__(self):
+    def __init__(self, model):
         self.sio = socketio.Server()
         self.app = socketio.Middleware(self.sio, Flask(__name__))
         self.sio.on('connect', handler=self.connect)
         self.sio.on('telemetry', handler=self.telemetry)
+        self.driver = Driver(model)
 
         eventlet.wsgi.server(eventlet.listen(('', 4567)), self.app)
 
@@ -26,25 +31,8 @@ class TelemetryServer:
 
     def telemetry(self, sid, data):
         if data:
-            steering_angle = data["steering_angle"]
-            throttle = data["throttle"]
-            speed = data["speed"]
-            imgString = data["image"]
-
-            image = Image.open(BytesIO(base64.b64decode(imgString)))
-            image_array = np.asarray(image)
-            # steering_angle = float(model.predict(image_array[None, :, :, :], batch_size=1))
-            steering_angle = 0
-            throttle = 0
-
-            # print(steering_angle, throttle)
-            self._send_control(steering_angle, throttle)
-
-            # save frame
-
-            # timestamp = datetime.utcnow().strftime('%Y_%m_%d_%H_%M_%S_%f')[:-3]
-            # image_filename = os.path.join(r"E:\PythonScripts\Ass\photo", timestamp)
-            # image.save('{}.jpg'.format(image_filename))
+            self.driver.get_properties_from_data(data)
+            self._send_control(self.driver.steering_angle, self.driver.throttle)
         else:
             self.sio.emit('manual', data={}, skip_sid=True)
 
@@ -60,14 +48,33 @@ class TelemetryServer:
 
 
 class Driver:
-    def __init__(self, max_speed: int = 25, min_speed: int = 10):
+    def __init__(self, model, max_speed: int = 25, min_speed: int = 10):
+        self.imgString = None
+        self.speed = None
         self.max_speed = max_speed
         self.min_speed = min_speed
 
-    def get_throttle(self, speed):
-        speed_limit = self.min_speed if speed > self.max_speed else self.max_speed
-        return 1.0 - (speed / speed_limit) ** 2
+        self.model = model
+
+    def get_properties_from_data(self, data):
+        self.speed = float(data["speed"])
+        self.imgString = data["image"]
+
+    @property
+    def throttle(self):
+        return 1.2 - (self.speed / self.max_speed)
+
+
+    @property
+    def steering_angle(self):
+        if self.model:
+            image = Image.open(BytesIO(base64.b64decode(self.imgString)))
+            image_array = np.asarray(image)
+            return float(self.model.predict(preprocess(image_array)[None, :, :, :], batch_size=1))
+        else:
+            return 0.0
 
 
 if __name__ == '__main__':
-    app = TelemetryServer()
+    app = TelemetryServer(load_model("model-010.h5"))
+
